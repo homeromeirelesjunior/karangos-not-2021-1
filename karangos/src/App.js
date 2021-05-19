@@ -11,6 +11,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import KarangosList from './routed/KarangosList';
 import KarangosForm from './routed/KarangosForm';
+import ClientesList from './routed/ClientesList';
+import ClientesForm from './routed/ClientesForm';
 
 
 const theme = createMuiTheme({
@@ -52,6 +54,12 @@ function Main() {
             </Route>
             <Route path="/new">
               <KarangosForm />
+            </Route>
+            <Route path="/clientesList">
+              <ClientesList />
+            </Route>
+            <Route path="/clientesNew">
+              <ClientesForm />
             </Route>
           </Switch>
         </Box>
