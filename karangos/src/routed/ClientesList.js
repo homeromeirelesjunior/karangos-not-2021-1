@@ -143,7 +143,7 @@ export default function ClientesList() {
                             <TableCell align="center">Logradouro</TableCell>
                             <TableCell align="center">Número</TableCell>
                             <TableCell align="center">Complemento</TableCell>
-                            <TableCell align="right">Bairro</TableCell>
+                            <TableCell align="center">Bairro</TableCell>
                             <TableCell align="center">Município</TableCell>
                             <TableCell align="center">UF</TableCell>
                             <TableCell align="center">Telefone</TableCell>
