@@ -163,7 +163,7 @@ export default function KarangosList() {
       headerAlign: 'center', 
       flex: true,
       renderCell: params => (
-        <IconButton aria-label="editar">
+        <IconButton aria-label="editar" onClick={() => history.push(`/edit/${params.id}`)}>
           <EditIcon />
         </IconButton>
       )
@@ -202,7 +202,14 @@ export default function KarangosList() {
         </Button>
       </Toolbar>
       <Paper elevation={4}>
-        <DataGrid className={classes.dataGrid} rows={karangos} columns={columns} pageSize={10} autoHeight={true} disableSelectionOnClick={true} />
+        <DataGrid 
+          className={classes.dataGrid} 
+          rows={karangos} 
+          columns={columns} 
+          pageSize={10} 
+          autoHeight={true} 
+          disableSelectionOnClick={true} 
+        />
       </Paper>
     </>
   )
