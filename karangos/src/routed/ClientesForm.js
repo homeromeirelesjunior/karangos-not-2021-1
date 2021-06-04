@@ -53,8 +53,8 @@ const formatChars = {
 }
 
 // Finalmente, a máscara de entrada do campo placa
-const emailCheck = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
-const cpfCheck = '000.000.000-00'
+const emailMask = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+const cpfMask = '000.000.000-00'
 
 export default function ClientesForm() {
     const classes = useStyles()
@@ -65,7 +65,7 @@ export default function ClientesForm() {
         cpf: '',
         rg: '',
         logradouro: '',
-        numero: '',
+        num_imovel: '',
         complemento: '',
         bairro: '',
         municipio: '',
@@ -91,11 +91,9 @@ export default function ClientesForm() {
         cpf: '',
         rg: '',
         logradouro: '',
-        numero: '',
-        complemento: '',
+        num_imovel: '',
         bairro: '',
         municipio: '',
-        uf: '',
         telefone: '',
         email: ''
     })
@@ -145,8 +143,6 @@ export default function ClientesForm() {
             // Quando o nome de uma propriedade de um objeto aparece entre [],
             // isso se chama "propriedade calculada". O nome da propriedade vai
             // corresponder à avaliação da expressão entre os colchetes
-            // setCurrentId(event.target.id)
-            // setKarango({ ...karango, [property]: event.target.value })
             clienteTemp[property] = event.target.value
         }
         setCliente(clienteTemp)
@@ -160,7 +156,7 @@ export default function ClientesForm() {
             cpf: '',
             rg: '',
             logradouro: '',
-            numero: '',
+            num_imovel: '',
             bairro: '',
             municipio: '',
             uf: '',
@@ -169,21 +165,51 @@ export default function ClientesForm() {
         }
         let isValid = true
 
-        // Validação do campo nome
+        // Validação do campo Nome
         if(data.nome.trim() === '') {
             errorTemp.nome = 'O nome deve ser preenchido'
             isValid = false
         }
 
         // Validação do campo CPF
-        if(data.cpf.trim() === '') {
-            errorTemp.cpf = 'O CPF deve ser preeenchido'
+        if(data.cpf.trim() === '' || data.cpf.includes('_')) {
+            errorTemp.cpf = 'CPF deve ser corretamente preenchido'
             isValid = false
         }
 
         // Validação do campo RG
         if(data.rg.trim() === '') {
-            errorTemp.rg = 'O RG deve ser preenchido'
+            errorTemp.rg = 'RG deve ser preenchido'
+            isValid = false
+        }
+
+        // Validação do campo Logradouro
+        if(data.logradouro.trim() === '') {
+            errorTemp.logradouro = 'Logradouro deve ser preenchido'
+            isValid = false
+        }
+
+         // Validação do campo Número
+        if(data.num_imovel.trim() === '') {
+            errorTemp.num_imovel = 'Número deve ser preenchido'
+            isValid = false
+        }
+
+        // Validação do campo Bairro
+        if(data.bairro.trim() === '') {
+            errorTemp.bairro = 'RG deve ser preenchido'
+            isValid = false
+        }
+        
+        // Validação do campo Município
+        if(data.municipio.trim() === '') {
+            errorTemp.municipio = 'Município deve ser preenchido'
+            isValid = false
+        }
+
+        // Validação do campo Email
+        if(data.email.trim() === '') {
+            errorTemp.email = 'Email deve ser preenchido'
             isValid = false
         }
 
@@ -288,7 +314,24 @@ export default function ClientesForm() {
                 />
 
                 {/* CPF */}
-                <TextField
+                <InputMask
+                    formatChars={formatChars}
+                    mask={cpfMask}
+                    value={cliente.cpf}
+                    id="cpf"
+                    onChange={event => handleInputChange(event, 'cpf')}
+                >
+                    {() => <TextField 
+                                label="CPF" 
+                                variant="filled" 
+                                fullWidth 
+                                required
+                                error={error.cpf !== ''}
+                                helperText={error.cpf}
+                            />}
+                </InputMask>
+
+                {/* <TextField
                     id="cpf" 
                     label="CPF" 
                     variant="filled" 
@@ -298,7 +341,7 @@ export default function ClientesForm() {
                     required
                     error={error.cpf !== ''}
                     helperText={error.cpf}
-                />
+                /> */}
 
                 {/* RG */}
                 <TextField
@@ -328,15 +371,15 @@ export default function ClientesForm() {
 
                 {/* Número */}
                 <TextField
-                    id="numero" 
+                    id="num_imovel" 
                     label="Número" 
                     variant="filled" 
-                    value={cliente.numero} 
+                    value={cliente.num_imovel} 
                     onChange={handleInputChange} 
                     fullWidth 
                     required
-                    error={error.numero !== ''}
-                    helperText={error.numero}
+                    error={error.num_imovel !== ''}
+                    helperText={error.num_imovel}
                 />
 
                 {/* Complemento */}
@@ -388,32 +431,32 @@ export default function ClientesForm() {
                     error={error.uf !== ''}
                     helperText={error.uf}
                 > 
-                    <MenuItem value="Acre">Acre</MenuItem>
-                    <MenuItem value="Alagoas">Alagoas</MenuItem>
-                    <MenuItem value="Amapá">Amapá</MenuItem>
-                    <MenuItem value="Amazonas">Amazonas</MenuItem>
-                    <MenuItem value="Bahia">Bahia</MenuItem>
-                    <MenuItem value="Ceará">Ceará</MenuItem>
-                    <MenuItem value="Distrito Federal">Distrito Federal</MenuItem>
-                    <MenuItem value="Espírito Santo">Espírito Santo</MenuItem>
-                    <MenuItem value="Goías">Goías</MenuItem>
-                    <MenuItem value="Maranhão">Maranhão</MenuItem>
-                    <MenuItem value="Mato Grosso">Mato Grosso</MenuItem>
-                    <MenuItem value="Mato Grosso do Sul">Mato Grosso do Sul</MenuItem>
-                    <MenuItem value="Minas Gerais">Minas Gerais</MenuItem>
-                    <MenuItem value="Pará">Pará</MenuItem>
-                    <MenuItem value="Paraíba">Paraíba</MenuItem>
-                    <MenuItem value="Paraná">Paraná</MenuItem>
-                    <MenuItem value="Pernambuco">Pernambuco</MenuItem>
-                    <MenuItem value="Piauí">Piauí</MenuItem>
-                    <MenuItem value="Rio de Janeiro">Rio de Janeiro</MenuItem>
-                    <MenuItem value="Rio Grande do Sul">Rio Grande do Sul</MenuItem>
-                    <MenuItem value="Rondônia">Rondônia</MenuItem>
-                    <MenuItem value="Roraíma">Roraíma</MenuItem>
-                    <MenuItem value="Santa Catarina">Santa Catarina</MenuItem>
-                    <MenuItem value="São Paulo">São Paulo</MenuItem>
-                    <MenuItem value="Sergipe">Sergipe</MenuItem>
-                    <MenuItem value="Tocantis">Tocantins</MenuItem>
+                    <MenuItem value="AC">Acre</MenuItem>
+                    <MenuItem value="AL">Alagoas</MenuItem>
+                    <MenuItem value="AP">Amapá</MenuItem>
+                    <MenuItem value="AM">Amazonas</MenuItem>
+                    <MenuItem value="BA">Bahia</MenuItem>
+                    <MenuItem value="CE">Ceará</MenuItem>
+                    <MenuItem value="DF">Distrito Federal</MenuItem>
+                    <MenuItem value="ES">Espírito Santo</MenuItem>
+                    <MenuItem value="GO">Goías</MenuItem>
+                    <MenuItem value="MA">Maranhão</MenuItem>
+                    <MenuItem value="MT">Mato Grosso</MenuItem>
+                    <MenuItem value="MS">Mato Grosso do Sul</MenuItem>
+                    <MenuItem value="MG">Minas Gerais</MenuItem>
+                    <MenuItem value="PA">Pará</MenuItem>
+                    <MenuItem value="PB">Paraíba</MenuItem>
+                    <MenuItem value="PR">Paraná</MenuItem>
+                    <MenuItem value="PE">Pernambuco</MenuItem>
+                    <MenuItem value="PI">Piauí</MenuItem>
+                    <MenuItem value="RJ">Rio de Janeiro</MenuItem>
+                    <MenuItem value="RS">Rio Grande do Sul</MenuItem>
+                    <MenuItem value="RO">Rondônia</MenuItem>
+                    <MenuItem value="RR">Roraíma</MenuItem>
+                    <MenuItem value="SC">Santa Catarina</MenuItem>
+                    <MenuItem value="SP">São Paulo</MenuItem>
+                    <MenuItem value="SE">Sergipe</MenuItem>
+                    <MenuItem value="TO">Tocantins</MenuItem>
                 </TextField>
 
                 {/* Telefone */}
@@ -423,8 +466,7 @@ export default function ClientesForm() {
                     variant="filled" 
                     value={cliente.telefone} 
                     onChange={handleInputChange} 
-                    fullWidth 
-                    required
+                    fullWidth
                     error={error.telefone !== ''}
                     helperText={error.telefone}
                 />
@@ -441,6 +483,22 @@ export default function ClientesForm() {
                     error={error.email !== ''}
                     helperText={error.email}
                 />
+                                {/* <InputMask
+                    formatChars={formatChars}
+                    mask={emailMask}
+                    value={cliente.email}
+                    id="email"
+                    onChange={event => handleInputChange(event, 'email')}
+                >
+                    {() => <TextField 
+                                label="Email" 
+                                variant="filled" 
+                                fullWidth 
+                                required
+                                error={error.email !== ''}
+                                helperText={error.email}
+                            />}
+                </InputMask> */}
                 
                 <Toolbar className={classes.toolbar}>
                     <Button 
