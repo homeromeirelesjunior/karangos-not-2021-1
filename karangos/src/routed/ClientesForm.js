@@ -54,6 +54,7 @@ const formatChars = {
 
 // Finalmente, a máscara de entrada do campo placa
 const emailCheck = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+const cpfCheck = '000.000.000-00'
 
 export default function ClientesForm() {
     const classes = useStyles()
@@ -160,7 +161,6 @@ export default function ClientesForm() {
             rg: '',
             logradouro: '',
             numero: '',
-            complemento: '',
             bairro: '',
             municipio: '',
             uf: '',
@@ -190,42 +190,6 @@ export default function ClientesForm() {
         setError(errorTemp)
 
         return isValid
-    }
-
-    const states = [
-        { 'AC': 'Acre' },
-        { 'AL': 'Alagoas' },
-        { 'AP': 'Amapá' },
-        { 'AM': 'Amazonas' },
-        { 'BA': 'Bahia' },
-        { 'CE': 'Ceará' },
-        { 'DF': 'Distrito Federal' },
-        { 'ES': 'Espírito Santo' },
-        { 'GO': 'Goías' },
-        { 'MA': 'Maranhão' },
-        { 'MT': 'Mato Grosso' },
-        { 'MS': 'Mato Grosso do Sul' },
-        { 'MG': 'Minas Gerais' },
-        { 'PA': 'Pará' },
-        { 'PB': 'Paraíba' },
-        { 'PR': 'Paraná' },
-        { 'PE': 'Pernambuco' },
-        { 'PI': 'Piauí' },
-        { 'RJ': 'Rio de Janeiro' },
-        { 'RN': 'Rio Grande do Norte' },
-        { 'RS': 'Rio Grande do Sul' },
-        { 'RO': 'Rondônia' },
-        { 'RR': 'Roraíma' },
-        { 'SC': 'Santa Catarina' },
-        { 'SP': 'São Paulo' },
-        { 'SE': 'Sergipe' },
-        { 'TO': 'Tocantins' }
-    ]
-
-    function years() {
-        let result = []
-        for (let i = (new Date()).getFullYear(); i >= 1900; i--) result.push(i)
-        return result
     }
 
     async function saveData() {
@@ -285,7 +249,7 @@ export default function ClientesForm() {
     
         // Se o usuário concordou em voltar 
         if(result) history.push('/clientesList')
-      }
+    }
 
     function handleGoBack() {
 
@@ -383,9 +347,6 @@ export default function ClientesForm() {
                     value={cliente.complemento} 
                     onChange={handleInputChange} 
                     fullWidth 
-                    required
-                    error={error.complemento !== ''}
-                    helperText={error.complemento}
                 />
 
                 {/* Bairro */}
@@ -420,7 +381,7 @@ export default function ClientesForm() {
                     label="UF" 
                     variant="filled" 
                     value={cliente.uf} 
-                    onChange={event => handleInputChange(event, 'cor')} 
+                    onChange={event => handleInputChange(event, 'uf')} 
                     fullWidth 
                     select
                     required
@@ -428,6 +389,8 @@ export default function ClientesForm() {
                     helperText={error.uf}
                 > 
                     <MenuItem value="Acre">Acre</MenuItem>
+                    <MenuItem value="Alagoas">Alagoas</MenuItem>
+                    <MenuItem value="Amapá">Amapá</MenuItem>
                     <MenuItem value="Amazonas">Amazonas</MenuItem>
                     <MenuItem value="Bahia">Bahia</MenuItem>
                     <MenuItem value="Ceará">Ceará</MenuItem>
