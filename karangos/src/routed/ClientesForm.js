@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
-import { FormControl, FormControlLabel } from '@material-ui/core'
-import Checkbox from '@material-ui/core/Checkbox'
 import InputMask from 'react-input-mask'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
@@ -38,13 +35,6 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-/* 
-    Classes de caracteres de entrada para a máscara do campo placa
-    1) Três primeiras posições: qualquer letra, de A a Z (maiúsculo ou minúsculo) ~> [A-Za-z]
-    2) Posições númericas (1º, a 3º e a 4º depois do traço) ~> [0-9]
-    3) 2º posição após o traço: pode receber dígitos de A a J (maiúsculas ou minúsculas) ~> [0-9A-Ja-j]
-*/
-
 // Representando as classes de caracteres da máscara como um objeto
 const formatChars = {    
     'A': '[A-Za-z]',
@@ -52,9 +42,9 @@ const formatChars = {
     '#': '[0-9A-Ja-j]'
 }
 
-// Finalmente, a máscara de entrada do campo placa
-const emailMask = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
 const cpfMask = '000.000.000-00'
+const rgMask = '00.000.000-0'
+const telefoneMask = '(00)00000-0000'
 
 export default function ClientesForm() {
     const classes = useStyles()
@@ -178,7 +168,7 @@ export default function ClientesForm() {
         }
 
         // Validação do campo RG
-        if(data.rg.trim() === '') {
+        if(data.rg.trim() === '' || data.rg.includes('_')) {
             errorTemp.rg = 'RG deve ser preenchido'
             isValid = false
         }
@@ -204,6 +194,12 @@ export default function ClientesForm() {
         // Validação do campo Município
         if(data.municipio.trim() === '') {
             errorTemp.municipio = 'Município deve ser preenchido'
+            isValid = false
+        }
+
+        // Validação do campo Telefone
+        if(data.telefone.trim() === '' || data.telefone.includes('_')) {
+            errorTemp.telefone = 'Telefone deve ser corretamente preenchido'
             isValid = false
         }
 
@@ -331,30 +327,23 @@ export default function ClientesForm() {
                             />}
                 </InputMask>
 
-                {/* <TextField
-                    id="cpf" 
-                    label="CPF" 
-                    variant="filled" 
-                    value={cliente.cpf} 
-                    onChange={handleInputChange} 
-                    fullWidth 
-                    required
-                    error={error.cpf !== ''}
-                    helperText={error.cpf}
-                /> */}
-
                 {/* RG */}
-                <TextField
-                    id="rg" 
-                    label="RG" 
-                    variant="filled" 
-                    value={cliente.rg} 
-                    onChange={handleInputChange} 
-                    fullWidth 
-                    required
-                    error={error.rg !== ''}
-                    helperText={error.rg}
-                />
+                <InputMask
+                    formatChars={formatChars}
+                    mask={rgMask}
+                    value={cliente.rg}
+                    id="rg"
+                    onChange={event => handleInputChange(event, 'rg')}
+                >
+                    {() => <TextField 
+                                label="RG" 
+                                variant="filled" 
+                                fullWidth 
+                                required
+                                error={error.rg !== ''}
+                                helperText={error.rg}
+                            />}
+                </InputMask>
 
                 {/* Logradouro */}
                 <TextField
@@ -460,17 +449,23 @@ export default function ClientesForm() {
                 </TextField>
 
                 {/* Telefone */}
-                <TextField
-                    id="telefone" 
-                    label="Telefone" 
-                    variant="filled" 
-                    value={cliente.telefone} 
-                    onChange={handleInputChange} 
-                    fullWidth
-                    error={error.telefone !== ''}
-                    helperText={error.telefone}
-                />
-
+                <InputMask
+                    formatChars={formatChars}
+                    mask={telefoneMask}
+                    value={cliente.telefone}
+                    id="telefone"
+                    onChange={event => handleInputChange(event, 'telefone')}
+                >
+                    {() => <TextField 
+                                label="Telefone" 
+                                variant="filled" 
+                                fullWidth 
+                                required
+                                error={error.telefone !== ''}
+                                helperText={error.telefone}
+                            />}
+                </InputMask>
+ 
                 {/* Email */}
                 <TextField
                     id="email" 
@@ -483,22 +478,6 @@ export default function ClientesForm() {
                     error={error.email !== ''}
                     helperText={error.email}
                 />
-                                {/* <InputMask
-                    formatChars={formatChars}
-                    mask={emailMask}
-                    value={cliente.email}
-                    id="email"
-                    onChange={event => handleInputChange(event, 'email')}
-                >
-                    {() => <TextField 
-                                label="Email" 
-                                variant="filled" 
-                                fullWidth 
-                                required
-                                error={error.email !== ''}
-                                helperText={error.email}
-                            />}
-                </InputMask> */}
                 
                 <Toolbar className={classes.toolbar}>
                     <Button 

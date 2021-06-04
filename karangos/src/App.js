@@ -11,7 +11,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import KarangosList from './routed/KarangosList2';
 import KarangosForm from './routed/KarangosForm';
-import ClientesList from './routed/ClientesList';
+import ClientesList from './routed/ClientesList2';
 import ClientesForm from './routed/ClientesForm';
 
 
@@ -63,6 +63,9 @@ function Main() {
               <ClientesList />
             </Route>
             <Route path="/clientesNew">
+              <ClientesForm />
+            </Route>
+            <Route path="/clientesEdit/:id">
               <ClientesForm />
             </Route>
           </Switch>
