@@ -495,8 +495,6 @@ export default function ClientesForm() {
                         {btnSendState.label}
                     </Button>
                 </Toolbar>
-
-                <div>{JSON.stringify(cliente)}<br /></div>
             </form>
         </>
     )
